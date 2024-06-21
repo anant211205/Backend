@@ -1,0 +1,14 @@
+{
+  "name": "cohort",
+  "version": "0.0.0",
+  "description": "nothing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "anant",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
