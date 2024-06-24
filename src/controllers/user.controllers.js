@@ -3,7 +3,8 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/Cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import jwt from "jsonwebtoken"
+ 
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -59,13 +60,15 @@ const registerUser = asyncHandler(async (req , res) => {
     const avatarLocalPath = req.files?.avatar[0]?.path ;
     // const coverImageLocalPath = req.files?.coverImage[0]?.path ;
 
+    
 
     let coverImageLocalPath ;
-    if(req.files && Array.isArray(req.files.coverImage
-        && req.files.coverImage.length > 0)){
+    if(req.files && Array.isArray(req.files.coverImage)
+        && req.files.coverImage.length > 0){
         coverImageLocalPath = req.files.coverImage[0].path
     }
 
+    // console.log(coverImageLocalPath)
     // console.log("req files" ,req.files)
 
     //check for avatar
@@ -125,7 +128,7 @@ const registerUser = asyncHandler(async (req , res) => {
         const {email , username , password} = req.body 
         
         // checking if you want user to login with un or email
-        if(!username || !email){
+        if(!username && !email){
             throw new ApiError(400 , "username or email is required")
         }
 
@@ -181,6 +184,8 @@ const registerUser = asyncHandler(async (req , res) => {
 
 })
 
+
+// logout logic
 const logoutUser = asyncHandler(async(req , res) => {
     await User.findByIdAndUpdate(
         req.user._id,
@@ -209,8 +214,64 @@ const logoutUser = asyncHandler(async(req , res) => {
 })
 
 
+const refereshAccessToken = asyncHandler(async (req , res) => {
+    const incomingRefreshToken = req.cookies
+    .refereshToken || req.body.refereshToken
+
+    if(incomingRefreshToken){
+        throw new ApiError(401 , "unauthorized request")
+    }
+
+    try {
+        const decodedToken = jwt.verify(
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+    
+        const user = await User.findById(decodedToken?._id)
+    
+        if(!user){
+            throw new ApiError(401 , "Invalid refresh Token")
+        }
+    
+    
+        if(incomingRefreshToken != user?.refereshToken){
+            throw new ApiError(401 , "refresh token is expired or not")
+        }
+    
+        const options = {
+            httpOnly : true ,
+            secure : true 
+        }
+    
+        const {accessToken , newRefereshToken} = await generateAccessAndRefreshTokens(user._id)
+    
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken , options )
+        .cookie("refreshToken" , newRefereshToken , options)
+        .json(
+            new ApiResponse(
+                200 ,
+                {
+                    accessToken,
+                    refereshToken : newRefereshToken ,
+                },
+                "Access token refreshed"
+            )
+        )
+    } catch (error) {
+        throw new ApiError(401 , error?.message || 
+            "Invalid refresh token"
+        )
+    }
+
+})
+
+
 export {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    refereshAccessToken
 }
