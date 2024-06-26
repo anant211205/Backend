@@ -42,7 +42,7 @@ userRouter.route("/change-password").post(verifyJWT , changeCurrentPassword)
 userRouter.route("/current-user").get(verifyJWT , getCurrentUser)
 userRouter.route("/update-account").patch(verifyJWT , updateAccountDetail)
 userRouter.route("/avatar").patch(verifyJWT , upload.single("avatar") , updateUserAvatar)
-userRouter.route("/coverImage").patch(verifyJWT , upload.single("/coverImage") , updateUserCoverImage)
+userRouter.route("/coverImage").patch(verifyJWT , upload.single("coverImage") , updateUserCoverImage)
 userRouter.route("/c/:username").get(verifyJWT , getUserChannelProfile)
 userRouter.route("/history").get(verifyJWT , getWatchHistory)
 
