@@ -20,7 +20,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
         return {accessToken , refereshToken}
 
     } catch (error) {
-        throw new ApiError(500 , "Something went wrong ehile generating tokens")
+        throw new ApiError(500 , "Something went wrong while generating tokens")
     }
 }
 
@@ -286,7 +286,8 @@ const changeCurrentPassword = asyncHandler(async (req , res) => {
     await user.save({validateBeforeSave: false})
 
     return res.status(200)
-    .json(new ApiResponse(200 , {} , "Password changed successfullt"))
+    .json(new ApiResponse(200 , {} , "Password changed successfully"))
+
 
 })
 
@@ -467,7 +468,7 @@ const getUserChannelProfile = asyncHandler(async (req , res) => {
 
 })
 
-const getWatchHistory=  asyncHandler(async (res , req) => {
+const getWatchHistory=  asyncHandler(async (req , res) => {
     const user = await User.aggregate([
         {
             $match: {
@@ -511,6 +512,7 @@ const getWatchHistory=  asyncHandler(async (res , req) => {
     ])
 
 
+    console.log(user)
     return res
     .status(200)
     .json(
@@ -522,7 +524,7 @@ const getWatchHistory=  asyncHandler(async (res , req) => {
     )
 
 })
-     
+  
 export {
     registerUser,
     loginUser,
