@@ -66,7 +66,7 @@ const updateTweet = asyncHandler(async (req, res) => {
     if(!content || content.length === ""){
         throw new ApiError(401 , "error !!! first add tweet")
     }
-
+    
     const updateRecentTweet = await Tweet.findByIdAndUpdate(
         tweetId ,
         {
