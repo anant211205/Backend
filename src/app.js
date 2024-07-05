@@ -21,11 +21,15 @@ app.use(cookieParser())
 import userRouter from "./routes/user.routes.js"
 import tweetRoute from "./routes/tweet.routes.js";
 import likeRoute from "./routes/like.routes.js"
+import videoRoute from "./routes/video.route.js"
+import commentRoute from "./routes/comment.routes.js"
 
 //routes declaration
 app.use("/api/v1/users" , userRouter)
 app.use("/api/v1/tweets" , tweetRoute)
 app.use("/api/v1/likes" , likeRoute)
+app.use("/api/v1/videos" , videoRoute)
+app.use("/api/v1/comments" , commentRoute)
 
 
 //https://localhost:8000/api/v1/users/register
