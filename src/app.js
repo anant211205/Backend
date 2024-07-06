@@ -23,6 +23,7 @@ import tweetRoute from "./routes/tweet.routes.js";
 import likeRoute from "./routes/like.routes.js"
 import videoRoute from "./routes/video.route.js"
 import commentRoute from "./routes/comment.routes.js"
+import healthRouter from "./routes/healthcheck.routes.js"
 
 //routes declaration
 app.use("/api/v1/users" , userRouter)
@@ -30,6 +31,7 @@ app.use("/api/v1/tweets" , tweetRoute)
 app.use("/api/v1/likes" , likeRoute)
 app.use("/api/v1/videos" , videoRoute)
 app.use("/api/v1/comments" , commentRoute)
+app.use("/api/v1/healthcheck" , healthRouter)
 
 
 //https://localhost:8000/api/v1/users/register
