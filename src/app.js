@@ -25,6 +25,7 @@ import videoRoute from "./routes/video.route.js"
 import commentRoute from "./routes/comment.routes.js"
 import healthRouter from "./routes/healthcheck.routes.js"
 import subscriptionRouter from "./routes/subscription.routes.js"
+import dashboardRouter from "./routes/dashboard.routes.js"
 
 //routes declaration
 app.use("/api/v1/users" , userRouter)
@@ -34,6 +35,7 @@ app.use("/api/v1/videos" , videoRoute)
 app.use("/api/v1/comments" , commentRoute)
 app.use("/api/v1/healthcheck" , healthRouter)
 app.use("/api/v1/subscriptions" , subscriptionRouter)
+app.use("/api/v1/dashboard" , dashboardRouter)
 
 
 //https://localhost:8000/api/v1/users/register
